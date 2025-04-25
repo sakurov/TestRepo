@@ -1,8 +1,12 @@
 name: hello-world
-on: push
+on: workflow_dispatch
 jobs:
   my-job:
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+      - name: Checkout Mobile Repository
+        uses: actions/checkout@v4
+        with:
+          repository: sakurov/AppRepo
+      - name: Run script
+        run: sh script.sh
