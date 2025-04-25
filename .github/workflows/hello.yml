@@ -4,9 +4,10 @@ jobs:
   my-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Mobile Repository
+      - name: Checkout App Repository
         uses: actions/checkout@v4
         with:
           repository: sakurov/AppRepo
+          token: ${{ secrets.TOKEN }}
       - name: Run script
         run: sh script.sh
