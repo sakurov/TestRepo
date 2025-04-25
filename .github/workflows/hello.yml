@@ -40,6 +40,7 @@ jobs:
           path: artifacts/app-debug.apk
   download-app:
     runs-on: ubuntu-latest
+    needs: build-and-upload-app
     steps:
       # Step 1
       - name: Download artifact
