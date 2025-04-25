@@ -1,13 +1,40 @@
-name: hello-world
+name: Build App
 on: workflow_dispatch
 jobs:
   my-job:
     runs-on: ubuntu-latest
     steps:
+      # Step 1
       - name: Checkout App Repository
         uses: actions/checkout@v4
         with:
           repository: sakurov/AppRepo
           token: ${{ secrets.TOKEN }}
-      - name: Run script
-        run: sh script.sh
+      # Step 2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      # Step 3
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 35
+          build-tools: 35.0.1
+          target: android-35
+      # Step 4
+      - name: Add Secrets to gradle.properties
+        run: echo "secret=${{ secrets.MY_SECRET }}" >> gradle.properties
+      # Step 5
+      - name: Build Android App
+        run: |
+          ./gradlew :app:assembleDebug
+          mkdir -p ../artifacts
+          cp app/build/outputs/apk/debug/app-debug.apk ../artifacts/
+      # Step 6
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-apk
+          path: artifacts/app-debug.apk
