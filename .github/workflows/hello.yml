@@ -28,13 +28,10 @@ jobs:
         run: echo "secret=${{ secrets.MY_SECRET }}" >> gradle.properties
       # Step 5
       - name: Build Android App
-        run: |
-          ./gradlew :app:assembleDebug
-          mkdir -p ../artifacts
-          cp app/build/outputs/apk/debug/app-debug.apk ../artifacts/
+        run: ./gradlew :app:assembleDebug
       # Step 6
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: artifacts/app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
